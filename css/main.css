@@ -1,0 +1,32 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+#formulario {
+    border: 1px solid black;
+    width: 40%;
+    margin: 20px;
+    padding: 20px;;
+}
+
+h1 {
+    text-align: left;
+    margin: 30px;
+    padding: 10px
+}
+
+#listaCompra {
+    border: 1px solid black;
+    width: 40%;
+    height: 300px;
+    margin: 20px;
+    padding: 20px
+}
+
+#lista {
+    padding: 20px;
+}
