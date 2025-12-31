@@ -27,6 +27,14 @@ const fabricaArticulos = new FabricaArticulos()
 
 const listaArticulos = []
 
+//Elementos del DOM
+
+const formulario = document.getElementById('formulario')
+const inputArticulo = document.getElementById('articulo')
+const botonAnadir = document.getElementById('botonAnadir')
+const botonNuevaLista = document.getElementById('nuevaLista')
+const listaDesordenada = document.getElementById('listaCompra')
+
 //addArticulo(nombre)
 
 function addArticulo(nombre){
@@ -59,14 +67,6 @@ function clearLista(){
     listaArticulos.length = 0
 }
 
-//Elementos del DOM
-
-const formulario = document.getElementById('formulario')
-const inputArticulo = document.getElementById('articulo')
-const botonAnadir = document.getElementById('botonAnadir')
-const botonNuevaLista = document.getElementById('nuevaLista')
-const listaDesordenada = document.getElementById('listaCompra')
-
 
 //Renderizado
 
@@ -76,17 +76,33 @@ function renderLista(){
     
     listaArticulos.forEach(articulo =>{
         const li = document.createElement('li')
-        li.textContent = articulo.nombre
         li.dataset.id = articulo.id
-        listaDesordenada.appendChild(li)
 
-        const botonBorrar = document.createElement('button')
-        botonBorrar.textContent = 'Borrar'
-        li.appendChild(botonBorrar)
+        //Texto 
 
+        const span = document.createElement('span')
+        span.textContent = articulo.nombre
+        li.appendChild(span)
+
+        //CheckBox
+        
         const checkBox = document.createElement('input')
         checkBox.type = 'checkbox'
+        checkBox.checked = articulo.comprado 
+        checkBox.dataset.action = 'toggle'
         li.appendChild(checkBox)
 
+        //BotonBorrar
+    
+        const botonBorrar = document.createElement('button')
+        botonBorrar.textContent = 'Borrar'
+        botonBorrar.dataset.action = 'delete'
+        li.appendChild(botonBorrar)  
+
+        //Estado visual
+
+        if(articulo.comprado){
+            li.classList.add('comprado')
+        }
     })
 }
