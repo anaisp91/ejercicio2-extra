@@ -35,6 +35,72 @@ const botonAnadir = document.getElementById('botonAnadir')
 const botonNuevaLista = document.getElementById('nuevaLista')
 const listaDesordenada = document.getElementById('listaCompra')
 
+//Inicializacion
+
+document.addEventListener('DOMContentLoaded', init)
+
+function init(){
+     
+    setUpState()
+    setUpEvents()
+    renderLista()
+}
+
+
+//SEtUpState
+
+function setUpState(){
+
+}
+
+//setUpEvents
+
+function setUpEvents(){
+
+    formulario.addEventListener('submit', onSubmitFormulario)
+    botonNuevaLista.addEventListener('click', onNuevaListaClick)
+    listaDesordenada.addEventListener('click', onListaClick)
+
+}
+
+function onSubmitFormulario(e){
+    e.preventDefault()
+
+    const nombreArticulo = inputArticulo.value.trim()
+
+    if(nombreArticulo !== '' ){
+        addArticulo(nombreArticulo)
+        inputArticulo.value = ''
+        renderLista()
+    }
+}
+
+function onNuevaListaClick(e){
+    e.preventDefault()
+     clearLista()
+     renderLista()
+}
+
+function onListaClick(e){
+
+  const action = e.target.dataset.action
+  if(!action) return
+
+  const li = e.target.closest('li')
+  if(!li) return
+
+  const id = Number(li.dataset.id)
+
+  if(action === 'delete'){
+    removeArticulo(id)
+  }
+
+  if(action === 'toggle'){
+    toggleComprado(id)
+  }
+
+    renderLista()
+}
 //addArticulo(nombre)
 
 function addArticulo(nombre){
