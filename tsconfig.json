@@ -1,5 +1,5 @@
 {
-  "include": ["./**/*.js"],
+  "include": ["./ejercicio/js/**/*.js"],
   "exclude": ["node_modules", "**/_hidden/**"],
 
   "compilerOptions": {
