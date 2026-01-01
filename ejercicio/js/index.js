@@ -1,4 +1,7 @@
-import { LocalStorage } from '../Clases/LocalStorage.js'
+// @ts-check
+
+/** @import { Articulo } from '../Clases/Article.js' */
+import { LocalStorage } from '../Clases/LocalStore.js'
 import { FabricaArticulos } from '../Clases/Article.js'
 
 //Instancias
@@ -7,7 +10,7 @@ const localStore = new LocalStorage('listaCompra')
 const fabricaArticulos = new FabricaArticulos()
 
 //Estado
-
+/** @type {Articulo[]} */
 const listaArticulos = []
 
 //Elementos del DOM
@@ -43,12 +46,13 @@ function setUpState(){
 
 function setUpEvents(){
 
-    formulario.addEventListener('submit', onSubmitFormulario)
-    botonNuevaLista.addEventListener('click', onNuevaListaClick)
-    listaDesordenada.addEventListener('click', onListaClick)
+    formulario?.addEventListener('submit', onSubmitFormulario)
+    botonNuevaLista?.addEventListener('click', onNuevaListaClick)
+    listaDesordenada?.addEventListener('click', onListaClick)
 
 }
 
+/** @param {SubmitEvent} e */
 function onSubmitFormulario(e){
     e.preventDefault()
 
@@ -61,12 +65,14 @@ function onSubmitFormulario(e){
     }
 }
 
+/** @param {MouseEvent} e */
 function onNuevaListaClick(e){
     e.preventDefault()
      clearLista()
      renderLista()
 }
 
+/** @param {MouseEvent} e */
 function onListaClick(e){
 
   const action = e.target.dataset.action
