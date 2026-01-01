@@ -1,26 +1,9 @@
-//Factory de Articulos
+import { LocalStorage } from '../Clases/LocalStorage.js'
+import { FabricaArticulos } from '../Clases/Article.js'
 
-class Articulo {
-    
-    id
-    nombre
-    comprado
-    
+//Instancias
 
-    constructor(id, nombre, comprado = false) {
-        this.nombre = nombre
-        this.comprado = comprado
-        this.id = id
-    }
-}
-
-class FabricaArticulos {
-    createArticulo(nombre){
-        const id = Date.now()
-        return new Articulo(nombre, id, comprado)
-    }
-}
-
+const localStore = new LocalStorage('listaCompra')
 const fabricaArticulos = new FabricaArticulos()
 
 //Estado
@@ -50,6 +33,9 @@ function init(){
 //SEtUpState
 
 function setUpState(){
+
+    const data = localStore.getItem()
+    listaArticulos.push(...data)
 
 }
 
@@ -106,6 +92,7 @@ function onListaClick(e){
 function addArticulo(nombre){
     const articulo = fabricaArticulos.createArticulo(nombre)
     listaArticulos.push(articulo)
+    localStore.setItem(listaArticulos)
     return articulo
 }
 
@@ -115,6 +102,7 @@ function removeArticulo(id){
     const index = listaArticulos.findIndex(articulo => articulo.id === id)
     if(index !== -1){
         listaArticulos.splice(index, 1)
+        localStore.setItem(listaArticulos)
     }
 }
 
@@ -124,6 +112,7 @@ function toggleComprado(id){
     const articulo = listaArticulos.find(articulo => articulo.id === id)
     if(articulo){
         articulo.comprado = !articulo.comprado
+        localStore.setItem(listaArticulos)
     }
 }
 
@@ -131,6 +120,7 @@ function toggleComprado(id){
 
 function clearLista(){
     listaArticulos.length = 0
+    localStore.clear()
 }
 
 
@@ -143,6 +133,7 @@ function renderLista(){
     listaArticulos.forEach(articulo =>{
         const li = document.createElement('li')
         li.dataset.id = articulo.id
+        listaDesordenada.appendChild(li)
 
         //Texto 
 
