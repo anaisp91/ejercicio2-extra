@@ -13,20 +13,52 @@ const fabricaArticulos = new FabricaArticulos()
 /** @type {Articulo[]} */
 const listaArticulos = []
 
-//Elementos del DOM
+function getDOMElements(){
 
-const formulario = document.getElementById('formulario')
-const inputArticulo = document.getElementById('articulo')
-const botonAnadir = document.getElementById('botonAnadir')
-const botonNuevaLista = document.getElementById('nuevaLista')
-const listaDesordenada = document.getElementById('listaCompra')
+    /** @returns {{
+     * formulario: HTMLFormElement,
+     * inputArticulo: HTMLInputElement,
+     * botonAnadir: HTMLButtonElement,
+     * botonNuevaLista: HTMLButtonElement,
+     * listaDesordenada: HTMLDListElement
+     * }} */
+
+    const formulario = document.getElementById('formulario')
+    const inputArticulo = document.getElementById('articulo')
+    const botonAnadir = document.getElementById('botonAnadir')
+    const botonNuevaLista = document.getElementById('nuevaLista')
+    const listaDesordenada = document.getElementById('listaCompra')
+
+    if(
+        !(formulario instanceof HTMLFormElement) ||
+        !(inputArticulo instanceof HTMLInputElement) ||
+        !(botonAnadir instanceof HTMLButtonElement) ||
+        !(botonNuevaLista instanceof HTMLButtonElement) ||
+        !(listaDesordenada instanceof HTMLDListElement)
+    ) {
+        throw new Error ('No ser han podido obtener los elementos del DOM')
+    }
+
+    return {
+        formulario,
+        inputArticulo,
+        botonAnadir,
+        botonNuevaLista,
+        listaDesordenada
+    }}
+
 
 //Inicializacion
 
+
+let dom
 document.addEventListener('DOMContentLoaded', init)
 
 function init(){
-     
+
+    const DOM = getDOMElements()
+
+
     setUpState()
     setUpEvents()
     renderLista()
@@ -46,9 +78,9 @@ function setUpState(){
 
 function setUpEvents(){
 
-    formulario?.addEventListener('submit', onSubmitFormulario)
-    botonNuevaLista?.addEventListener('click', onNuevaListaClick)
-    listaDesordenada?.addEventListener('click', onListaClick)
+    dom.formulario.addEventListener('submit', onSubmitFormulario)
+    dom.botonNuevaLista?.addEventListener('click', onNuevaListaClick)
+    dom.listaDesordenada?.addEventListener('click', onListaClick)
 
 }
 
@@ -56,6 +88,7 @@ function setUpEvents(){
 function onSubmitFormulario(e){
     e.preventDefault()
 
+  
     const nombreArticulo = inputArticulo.value.trim()
 
     if(nombreArticulo !== '' ){
@@ -75,10 +108,13 @@ function onNuevaListaClick(e){
 /** @param {MouseEvent} e */
 function onListaClick(e){
 
-  const action = e.target.dataset.action
+  const target = /** @type {HTMLElement} */ (e.target)
+  if(!target) return
+
+  const action = target.dataset.action
   if(!action) return
 
-  const li = e.target.closest('li')
+  const li = target.closest('li')
   if(!li) return
 
   const id = Number(li.dataset.id)
@@ -94,7 +130,7 @@ function onListaClick(e){
     renderLista()
 }
 //addArticulo(nombre)
-
+/** @param {string} nombre  */
 function addArticulo(nombre){
     const articulo = fabricaArticulos.createArticulo(nombre)
     listaArticulos.push(articulo)
@@ -104,6 +140,7 @@ function addArticulo(nombre){
 
 //removeArticulo(id)
 
+/** @param {number} id  */
 function removeArticulo(id){
     const index = listaArticulos.findIndex(articulo => articulo.id === id)
     if(index !== -1){
@@ -113,7 +150,7 @@ function removeArticulo(id){
 }
 
 // toggleComprado(id)
-
+/** @param {*} id  */
 function toggleComprado(id){
     const articulo = listaArticulos.find(articulo => articulo.id === id)
     if(articulo){
@@ -138,7 +175,7 @@ function renderLista(){
     
     listaArticulos.forEach(articulo =>{
         const li = document.createElement('li')
-        li.dataset.id = articulo.id
+        li.dataset.id = String(articulo.id)
         listaDesordenada.appendChild(li)
 
         //Texto 
